@@ -1,3 +1,5 @@
+Please run npm install
+
 To run signed jwt token generation and verification
 
 % node jwt
