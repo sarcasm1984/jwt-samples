@@ -1,4 +1,5 @@
 const jose = require("jose");
+const EncryptRsa = require('encrypt-rsa').default;
 
 let encryptContent = {
     encryptText : async (payload, secret) => {
@@ -13,6 +14,28 @@ let encryptContent = {
 			keyManagementAlgorithms: ["dir"],
 		};
 		return jose.jwtDecrypt(jwt, secret, options);
+	},
+
+	encryptPublicKey : async(secretMessage, publicKey) => {
+		const encryptRsa = new EncryptRsa();
+
+		const encryptedData = encryptRsa.encryptStringWithRsaPublicKey({ 
+			text: secretMessage,   
+			publicKey,
+		  });
+		
+		return encryptedData.toString('hex');
+	},
+
+	decryptPublicKey : async(encryptedData, privateKey) => {
+		const encryptRsa = new EncryptRsa();
+		
+		const decryptedData = encryptRsa.decryptStringWithRsaPrivateKey({ 
+			text: encryptedData, 
+			privateKey
+		  });
+
+		return decryptedData.toString('utf-8');
 	}
 }
 
